@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import mixins , generics ,status
 from rest_framework.views import APIView 
 from rest_framework.parsers import JSONParser
@@ -6,23 +5,22 @@ from django.http import HttpResponse , JsonResponse
 from rest_framework.response import Response
 from .models import * 
 from .serializer import *
-# matnsach dir try w el cas ta3 exception 
-#USER
+#USER delete ,update aw ghalet 
 class get_create_user(generics.GenericAPIView , mixins.CreateModelMixin , mixins.ListModelMixin):
     serializer_class = user_serializer
-    queryset=User.objects.all()
+    queryset=user.objects.all()
     def get(self,request):
         return self.list(request)
     def post(self,request):
         return self.create(request)
 class delete_update_user_api(generics.GenericAPIView , mixins.DestroyModelMixin , mixins.UpdateModelMixin):
     serializer_class = user_serializer
-    queryset=User.objects.all()
-    lookup_field="id"
-    def delete(self, request,id):
-        return self.destroy(request,id)
-    def put(self,request,id):
-        return self.update(request,id)
+    queryset=user.objects.all()
+    lookup_field="pk"
+    def delete(self, request,pk):
+        return self.destroy(request,username="dady")
+    def put(self,request,pk):
+        return self.update(request,_id=pk)
 #PUBS
 class get_create_pub(generics.GenericAPIView , mixins.CreateModelMixin , mixins.ListModelMixin):
     serializer_class = pub_serializer
@@ -139,3 +137,34 @@ class delete_update_company_profile_api(generics.GenericAPIView , mixins.Destroy
         return self.destroy(request,id)
     def put(self,request,id):
         return self.update(request,id)
+#COMMENT 
+class create_commentAPI(generics.GenericAPIView , mixins.CreateModelMixin):
+    serializer_class=comment_serializer
+    queryset=comment.objects.all()
+    def post(self,request,id):
+        return self.create(request)
+class getposts_commentAPI(APIView):
+    def get(self,request, id):
+        try:
+            comments = comment.objects.filter(post=id)
+            serializer = comment_serializer(comments)
+            return JsonResponse(serializer.data)
+        except :
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request, id ):
+        try:
+            comment_to_delete = comment.objects.filter(id=id)
+            serializer = comment_serializer(comment_to_delete)
+            if serializer.is_valid():
+                serializer.delete()
+            return JsonResponse(serializer.data)
+        except :
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#MESSAGES
+class send_recieve_messageAPI(generics.GenericAPIView, mixins.CreateModelMixin ,mixins.ListModelMixin):
+    serializer_class = message_serializer
+    queryset = message.objects.all()
+    def get(self,request):
+        return self.list(request)
+    def post(self,request):
+        return self.create(request)
