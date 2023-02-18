@@ -20,7 +20,7 @@ urlpatterns = [
     #ymcho 
     path('admin/', admin.site.urls),
     path('api/user/',get_create_user.as_view()),
-    path('api/user/<int:id>',delete_update_user_api.as_view()),
+    path('api/user/<str:pk>',delete_update_user_api.as_view()),
     path('api/pub/',get_create_pub.as_view()),
     path('api/pub/<int:id>',delete_update_pub.as_view()),
     path('api/themes/',get_themes.as_view()),
@@ -31,7 +31,4 @@ urlpatterns = [
     path('api/ensignant_profile/<int:id>',profile_ensignats_api.as_view()),
     path('api/comapny_profile/',get_create_company_profile.as_view()),
     path('api/comapny_profile/<int:id>',delete_update_company_profile_api.as_view()),
-    #maymchouh 
-    
-    
 ]
