@@ -16,11 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from API.views import *
+from knox import views as knox_views
 urlpatterns = [
     #ymcho 
     path('admin/', admin.site.urls),
-    path('api/user/',get_create_user.as_view()),
-    path('api/user/<str:pk>',delete_update_user_api.as_view()),
+    path('api/register/',register.as_view()),
+    path('api/login/',loginAPI.as_view()),
+    path('api/logout/', knox_views.LogoutView.as_view(), name='logout'),
     path('api/pub/',get_create_pub.as_view()),
     path('api/pub/<int:id>',delete_update_pub.as_view()),
     path('api/themes/',get_themes.as_view()),
