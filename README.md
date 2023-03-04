@@ -57,3 +57,69 @@ Example Response :
 204 No content 
 
 # localhost:8000/api/pub/
+* POST localhost:8000/api/pub/?Token={token}
+to create a new post, post can be a question or a theme proposed by an ensignant
+Request Example : 
+POST localhost:8000/api/pub/?Token={token}
+{
+        "text": "your text here",
+        "pub_type": "question",
+        "type": "question",
+        "user": 8
+}
+Response Example : 
+{
+    "id": 2,
+    "text": "your text here",
+    "pub_type": "question",
+    "date": "2023-03-04",
+    "type": "question",
+    "user": 8
+}
+* GET localhost:8000/api/pub/?Token={token}
+in this endpoint we can get all the pub in the data base and their information 
+Request Examples : 
+GET localhost:8000/api/pub/?Token={token}
+Response Example : 
+{
+        "id": 2,
+        "text": "your text here",
+        "pub_type": "question",
+        "date": "2023-03-04",
+        "type": "question",
+        "user": 8
+}
+* DELETE localhost:8000/api/pub/{pub_id}?Token={token}
+to delete a specific Pub from db (supecified by the ID) 
+* PUT localhost:8000/api/pub/{pub_id}?Token={token}
+to modify an existing post by adding or replacing some field (supecified by the ID) 
+Request Example : 
+PUT localhost:8000/api/pub/2?Token={token}
+{
+        "text": "your text here",
+        "pub_type": "theme",
+        "type": "theme",
+        "user": 8
+}
+Response Example :
+{
+    "id": 2,
+    "text": "your text here",
+    "pub_type": "theme",
+    "date": "2023-03-04",
+    "type": "theme",
+    "user": 8
+}
+# Get Started with this APIs 
+* first you need to create a virtual envirenement : go to the folder you want to set the project open the cmd and : 
+virtualenv virtualenv_name or you can use : python -m virtualenv virtualenv_name.
+* cd virtualenv_name/Scripts.
+* activate (write activate in the cmd after accessign to the Scripts folder)
+* cd ../
+* pip install django  
+* django-admin startproject ser_db
+* cd ser_db
+* clone the content of this repo 
+* pip install -r requirements.txt
+* py manage.py runserver 
+run the server on localhost and now you can use your endpoints
