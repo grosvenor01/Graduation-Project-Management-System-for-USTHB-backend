@@ -6,6 +6,7 @@ you can also access to the token db
 # POST localhost:8000/api/register
 create a new account in the db it's generate a token wwhen the user created succefully this token saved in the authtoken table in the database and can be seted in the browser's
 cookies (this feature is not done yet) when user try to access some data like other APIs we need this token to be saved in his browser for a diret connection 
+PS: you need to create another request before this to generate an empty user profile based on the type of the user 
 Request Example : 
 * POST localhost:8000/api/register
 {
