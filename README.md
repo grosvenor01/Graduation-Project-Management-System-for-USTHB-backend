@@ -110,6 +110,93 @@ Response Example :
     "type": "theme",
     "user": 8
 }
+
+# GET localhost:8000/api/themes/
+get all the themes proposed in the website and the id of the user who propose this theme 
+Request Example : 
+localhost:8000/api/themes/?Token=753477ecfd0dc6de6b9716db62e6910f8cff68244a96333821e45bf1766d8627
+
+Response Example : 
+{
+        "id": 2,
+        "text": "your text here",
+        "pub_type": "theme",
+        "date": "2023-03-04",
+        "type": "theme",
+        "user": 8
+ }
+ 
+ # GET localhost:8000/api/questions/
+ get all questions proposed in the website
+ Request Example : 
+localhost:8000/api/questions/?Token=753477ecfd0dc6de6b9716db62e6910f8cff68244a96333821e45bf1766d8627
+
+Response Example : 
+{
+        "id": 2,
+        "text": "your text here",
+        "pub_type": "question",
+        "date": "2023-03-04",
+        "type": "question",
+        "user": 8
+ }
+ 
+ # localhost:8000/api/student_profile/-----localhost:8000/api/ensignant_profile/-----localhost:8000/api/comapny_profile/
+ 
+ * GET 
+   stand for get the info about the profile of a user just like CV , name , other ... for a student and grade , specialité ... for ensignant 
+   Request Example : 
+   localhost:8000/api/student_profile/?Token=753477ecfd0dc6de6b9716db62e6910f8cff68244a96333821e45bf1766d8627
+   Response Example : student 
+   {
+        "id": 1,
+        "speciality": "inforamtique",
+        "interested": "blockchaine dev",
+        "university_name": "usthb",
+        "CV": "/CVs/IMG20221122152956.jpg",
+        "study_level": "L3",
+        "github_link": "https://github.com",
+        "linkedin_link": "https://github.com",
+        "user": 1,
+        "binome": 1
+    }
+    Ensignant :
+    {
+        "id": 2,
+        "speciality": "ACAD",
+        "interested": "block chaine dev",
+        "university_name": "usthb",
+        "grade": "IDK",
+        "rating": 3,
+        "departement": "info",
+        "user": 8
+    }
+# PUT localhost:8000/api/student_profile/{id}-----localhost:8000/api/ensignant_profile/{id}-----localhost:8000/api/comapny_profile/{id}
+make edit for a profile of student , ensignat , company this should be after make a register a empty profile should created so the user can add his information 
+same as binome  profile 
+Request Example : ensignant
+PUT localhost:8000/api/ensignant_profile/2?Token=753477ecfd0dc6de6b9716db62e6910f8cff68244a96333821e45bf1766d8627
+{
+        "speciality": "ISILE",
+        "interested": "web dev ",
+        "university_name": "usthb",
+        "grade": "IDK",
+        "rating": 4,
+        "departement": "info",
+        "user": 8
+    }
+ Response Example: 
+ {
+    "id": 2,
+    "speciality": "ISILE",
+    "interested": "web dev",
+    "university_name": "usthb",
+    "grade": "IDK",
+    "rating": 4,
+    "departement": "info",
+    "user": 8
+}
+
 # Get Started with this APIs 
 * first you need to create a virtual envirenement : go to the folder you want to set the project open the cmd and : 
 virtualenv virtualenv_name or you can use : python -m virtualenv virtualenv_name.
