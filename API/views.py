@@ -10,8 +10,7 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.contrib.auth import login
 from rest_framework import permissions , authentication
 from knox.views import LoginView as KnoxLoginView
-
-#USER 
+#USER
 class register(generics.GenericAPIView):
     serializer_class = RegisterSerializer
     def post(self, request, *args, **kwargs):
@@ -38,6 +37,8 @@ class get_create_pub(generics.GenericAPIView , mixins.CreateModelMixin , mixins.
     def get(self,request):
         return self.list(request)
     def post(self,request):
+        if request.data["user_type"]!= "ensignant" and request.data["user_type"]!= "entreprise" and request.data["type"]=="theme":
+            return Response({"error":"this type of users can't create a theme"})
         return self.create(request)
 class delete_update_pub(generics.GenericAPIView , mixins.DestroyModelMixin , mixins.UpdateModelMixin):
     permission_classes = [permissions.IsAuthenticated]
@@ -85,13 +86,16 @@ class profile_student_api(APIView):
             serializer.save()
             return JsonResponse(serializer.data , status=200,safe=False)
         return JsonResponse(serializer.data , status=404,safe=False)
-class create_get_student_profile(APIView):#hna kayen ghelta fel post 
+class create_get_student_profile(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def get( self , request ):
         all_profiles= student_profile.objects.all()
         serializer=student_profile_serializer(all_profiles,many=True)
         return JsonResponse(serializer.data,safe=False, status=200)
     def post(self, request, format=None):
+        print(request.auth)
+        if request.data['user'] == request.data['binome']:
+            return Response({"error":"vous devez choisire un autre binome"},status=404)
         serializer = student_profile_serializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
