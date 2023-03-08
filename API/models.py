@@ -1,14 +1,17 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 import datetime
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 User = get_user_model() 
 class pub(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE)
-    text=models.TextField()
-    pub_type=models.CharField(max_length =30 ,choices=(('question','question'),('theme','theme')))
+    user_type = models.CharField(max_length =30,choices=(('etudiant','etudiant'),('ensignant','ensignant'),('entreprise','entreprise')))
+    main_text=models.CharField(max_length=300)
+    description_text=models.TextField()
+    type=models.CharField(max_length =30 ,choices=(('question','question'),('theme','theme')))
+    keywords = models.CharField(max_length=400) #converting the keywords into a string and store it 
     date=models.DateField(default=datetime.date.today)
-    type=models.CharField(max_length=10,choices=(("theme","theme"),("question","question")))
     def __str__(self):
         return self.user.username
 class profile(models.Model):
@@ -33,15 +36,14 @@ class student_profile(profile):
         return self.user.username
 class ensignant_profile(profile):
     grade=models.CharField(max_length=200)
-    rating =models.IntegerField()
-    departement=models.CharField(max_length=300)
+    rating =models.IntegerField(validators=[MaxValueValidator(5),MinValueValidator(0)])
     def __str__(self):
         return self.user.username
 class company_profile(models.Model):
     name=models.CharField(max_length=130)
     desription = models.TextField()
     post_needed = models.CharField(max_length=250)
-    validation = models.CharField(max_length =30 ,choices=(("true","true"),("false","false")))
+    validation = models.CharField(max_length =30 ,choices=(("True","True"),("False","False")))
     def __str__(self):
         return self.name
 class comment(models.Model):
