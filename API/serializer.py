@@ -8,17 +8,17 @@ class pub_serializer(serializers.ModelSerializer):
     class Meta:
         model=pub
         fields ="__all__"
-class student_profile_serializer(serializers.ModelSerializer):
+class student_serializer(serializers.ModelSerializer):
     class Meta:
-        model=student_profile
+        model=student
         fields ="__all__"
-class ensignant_profile_serializer(serializers.ModelSerializer):
+class ensignant_serializer(serializers.ModelSerializer):
     class Meta:
-        model=ensignant_profile
+        model=ensignant
         fields ="__all__"
-class company_profile_serializer(serializers.ModelSerializer):
+class company_serializer(serializers.ModelSerializer):
     class Meta: 
-        model = company_profile
+        model = company
         fields ="__all__"
 class comment_serializer(serializers.ModelSerializer):
     class Meta:
@@ -27,6 +27,26 @@ class comment_serializer(serializers.ModelSerializer):
 class message_serializer(serializers.ModelSerializer):
     class Meta:
         model=message
+        fields="__all__"
+class jury_serializer(serializers.ModelSerializer):
+    class Meta:
+        model=jury
+        fields="__all__"
+class themes_ToValidate_serializer(serializers.ModelSerializer):
+    class Meta:
+        model=themes_to_validate
+        fields="__all__"
+class validated_themes_serializer(serializers.ModelSerializer):
+    class Meta:
+        model=validated_themes
+        fields="__all__"
+class comission_serializer(serializers.ModelSerializer):
+    class Meta:
+        model=comission_validation
+        fields="__all__"
+class notification_serializer(serializers.ModelSerializer):
+    class Meta:
+        model=notification
         fields="__all__"
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
