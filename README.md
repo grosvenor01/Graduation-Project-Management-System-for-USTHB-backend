@@ -197,6 +197,118 @@ PUT localhost:8000/api/ensignant_profile/2?Token=753477ecfd0dc6de6b9716db62e6910
     "departement": "info",
     "user": 8
 }
+# api/postuler/{id}
+* POST :  when a student try to "postuler" to a theme if he is a binome a notification will be send to his binome and if the binome accept this theme a notification will be send to the ensignant who post, if it's monome  a notification should be send directly to the ensignant this api gonna send this notification example : 
+*request example : 
+POST localhost:8000/api/postuler/3 (the id here is the id of the post) 
+{
+   "user": 2 (the id of student that insteract with the post)
+} (here a notification should be send to the binome or ensignant)
+
+# api/notification/{id}
+* GET : return all notification for a specific user (the user speciffied in the by the id)
+* request example : 
+localhost:8000/notification/6
+* response example : 
+{
+        "id": 1,
+        "titel": "etudiant a demender de postuler au theme intituler theme",
+        "decription": "",
+        "date": "2023-04-09T00:00:00Z",
+        "notification_type": "notification_binome",
+        "user": 6,
+        "id_pub": 2,
+        "send_from": null
+}
+
+* POST : if the student  accept a theme that his binome "postuler" to a notifcation should be send to the ensignant and the urrent notification should be deleted 
+or in case of an ensignant accepte "encadrer" a binome or monome a notification should be send to the students and delete all other "notification for the same post"
+* request example  : (by the ay we send the id of th notification in thius case)
+{
+    "status":"Accepted",
+    "id_pub": 2,    (the id of the theme)
+    "user":6,       (id of the user that accept)
+    "binome":5      (if of his binome)
+} in this case the notification will be sended to the ensinant who propose this theme 
+* response example : 
+la demende a etait envoyer
+
+#api/envoyer-fiche-de-pfe/
+*post : here we gonna send the data to generat a "fiche de pfe" and send it to the "responsable" who will create a comission to validate this theme 
+* example request : 
+{
+    "choix":"IV",
+    "gl":"Oui",
+    "archi":"Oui",
+    "reseau":"Off",
+    "computer_vision":"Oui",
+    "ai":"Oui",
+    "info_th":"Off",
+    "web/app":"Oui",
+    "BioInfo":"Oui",
+    "nom1":"abdelkader",
+    "nom1_matricule":"202031060744",
+    "nom1_email":"etudiant email",
+    "nom1_tel":"etudiant tel",
+    "nom2":"binome",
+    "nom2_matricule":"202031060744",
+    "nom2_email":"binome@gmail.com",
+    "nom2_tel":"num tel_binome",
+    "nom1_encadreur":"encadreur1",
+    "nom1_encGrade":"grade",
+    "nom1_encemail":"encadreur1@gmail.com",
+    "nom2_encadreur":"encadreur2",
+    "nom2_encGrade":"grade",
+    "nom2_encemail":"encadreur2@gmail.com",
+    "titre":"titre de projet",
+    "resume":"resume de texr",
+    "mot_cle":"les mots cles",
+    "plan":"plan 1 \n plan 2 \n plan 3",
+    "bibliotheques":"je sais pas ",
+    "specialite":"IV",
+    "niveau":"M2",
+    "organisme":"Interne",
+    "raison_social":"je sais pas ",
+    "service":"je sais pas "
+}
+* response example : fichier envoyer a le responsable pour le valider  (here the theme added to theme to validate table)
+
+#api/validation_des_themes/{id}
+* GET : return all the themes that need to be validated for a specific responsable 
+*request example : localhost:8000/api/validation_des_themes/2
+*response example : 
+{
+        "id": 11,
+        "file": "/fiches/temp2.pdf",
+        "specialite": "IV"
+    }
+   
+ * POST : the responsable should create a commision to validate this theme (sended in the path 
+ request example :
+ {
+    "ens1":3,
+    "ens2":4,
+    "ens3":5
+}
+* response example : 
+{
+    "id": 1,
+    "ensignant1": 3,
+    "ensignant2": 4,
+    "ensignant3": 5,
+    "theme": 11
+} this is the data of the commission
+
+#api/accpete_refuse_themes/{id}
+*POST we send the status (accepted or refused theme) sended bythe commision and here we show the results in the sheet 
+*example request : 
+{
+    "status":"Accepted",
+    "specialite":"ISIL",
+    "niveau":"L3"
+}
+* example response : 
+theme added
 
 # Get Started with this APIs 
 * first you need to create a virtual envirenement : go to the folder you want to set the project open the cmd and : 
