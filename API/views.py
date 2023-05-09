@@ -41,6 +41,27 @@ class get_create_pub(generics.GenericAPIView , mixins.CreateModelMixin , mixins.
         if request.data["user_type"]!= "ensignant" and request.data["user_type"]!= "entreprise" and request.data["type"]=="theme":
             return Response({"error":"this type of users can't create a theme"})
         return self.create(request)
+    
+class get_recomanded_post(APIView):
+    def get(self , request):
+        import numpy as np
+        # Load the similarity matrix
+        similarity_matrix = np.load('models/similarity_matrix.pkl',allow_pickle=True)
+        index = 0
+        # Sort the similarity scores in descending order
+        similarity_scores = list(enumerate(similarity_matrix[index]))
+        sorted_sim_scores = sorted(similarity_scores, key=lambda x: x[1], reverse=True)
+        # Get the top 5 most similar documents
+        top = sorted_sim_scores[1:]
+        #get all objects 
+        objects=[]
+        for index, score in top:
+            try : 
+                objects.append(pub.objects.get(id=index))
+            except pub.DoesNotExist :
+                pass
+        serializer= pub_serializer(objects , many=True )
+        return JsonResponse(serializer.data , status = 200, safe=False)
 class delete_update_pub(generics.GenericAPIView , mixins.DestroyModelMixin , mixins.UpdateModelMixin):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = pub_serializer
@@ -322,8 +343,7 @@ class generate_fiche_pfe(APIView):
             themes=themes_to_validate.objects.create(file="fiches/temp2.pdf",specialite=request.data['specialite'])
             themes.save()
             return HttpResponse("fichier envoyer a le responsable pour le valider")
-            pass
-class themes_validation(APIView):
+class themes_validation(APIView): #hna tatkhdam el comission
     def get(self , request , id): #lazm yb3at el id ta3 el responsable hna 
         try: 
             the_user = resp_epcialit.objects.get(id=id)
@@ -335,7 +355,7 @@ class themes_validation(APIView):
     def post(self , request , id ): #cree une comission / hna yb3at el id ta3 theme to validate
         theme =  themes_to_validate.objects.get(id=id)
         if request.data['ens1']== request.data['ens2'] or request.data['ens1']==request.data['ens3'] or request.data['ens2']==request.data['ens3']:
-            return Response({"error":"les ensignant doivent etrre different"})
+            return Response({"error":"les ensignant doivent etre different"})
         comission =comission_validation.objects.create(ensignant1=ensignant.objects.get(id=request.data['ens1']),ensignant2=ensignant.objects.get(id=request.data['ens2']),ensignant3=ensignant.objects.get(id=request.data['ens3']), theme = theme)
         comission.save()
         serializer = comission_serializer(comission)
@@ -361,7 +381,7 @@ class accpete_refuse_themes(APIView):
 def add_theme_to_sheet(file,status,niveau):
         sa=gspread.service_account(filename='service_account.json')
         sh = sa.open("List PFEs")
-        wks = sh.worksheet("SIQ")
+        wks = sh.worksheet("IA")
         data = fillpdfs.get_form_fields(file)
         choix =  ''
         type = ''
@@ -382,7 +402,45 @@ def add_theme_to_sheet(file,status,niveau):
         
         if niveau == "M2":
             organisme = data.get("Groupe112")
+            choix = data.get("Groupe103")
+            if choix == "Choix4" or choix == "Choix2" or choix == "Choix5" or choix == "Choix1":
+                wks = sh.worksheet("SIQ")
+        elif data.get("Groupe112") == "Choix6" or data.get("Groupe103")=="Choix5":
+            wks = sh.worksheet("SIQ")
+        
         values = [choix,1,type, nom_prenom1,nom_prenom2,titre,promoteur1,promoteur2, organisme,validation,
               n_commssion,com_suiv,Email,matricule1,email1,matricule2,email2] #nbdal el data (jbd data mal file)
         wks.insert_row(values,2)
+class jury_managing(APIView):
+    def post(slef , request, id): #id ta3 theme
+        try:
+            memeber1=ensignant.objects.get(user=User.objects.get(username=request.data['memeber1']))
+            memeber2=ensignant.objects.get(user=User.objects.get(username=request.data['memeber2']))
+            president=ensignant.objects.get(user=User.objects.get(username=request.data['president']))
+            theme = validated_themes.objects.get(id=id)
+            nom_encadreur = fillpdfs.get_form_fields(theme.file)["Texte95"]
+            if memeber1 == memeber2 or memeber1 == president or memeber2 == president:
+                return Response({"error":"vous devez choisire des differents ensignants"})
+            elif jury.objects.get(themes=theme):
+                return Response({"error":"ce theme a deja une jury"})
+            elif memeber1.user.username == nom_encadreur  or memeber2.user.username == nom_encadreur or president.user.username == nom_encadreur:
+                return Response({"error":"un memebre de jury doit pas etre un encadreur de meme theme"})
+            
+            la_jury = jury.objects.create(m_jury_st=memeber1,jury_nd=memeber2,president=president,themes=theme)
+            la_jury.save()
+            serializer=jury_serializer(la_jury,many=False) 
+            return JsonResponse(data=serializer.data,status=200)
+        except ensignant.DoesNotExist or User.DoesNotExist:
+            return Response({"error":"cette utilisateur n'existe pas"})
+    def get(self, request , id ): #id ta3 theme / naffichiw la jury ta3 had el theme
+        theme=validated_themes.objects.get(id=id)
+        jury_of_theme = jury.objects.get(themes=theme)
+        titre = fillpdfs.get_form_fields(theme.file)["Texte85"]
+        response = {
+           "theme": titre,
+           "jury 1 ":{"username":jury_of_theme.m_jury_st.user.get_username() , "email":jury_of_theme.m_jury_st.user.get_email_field_name()},
+           "jury 2 ":{"username":jury_of_theme.jury_nd.user.get_username() , "email":jury_of_theme.jury_nd.user.get_email_field_name()},
+           "president":{"username":jury_of_theme.president.user.get_username() , "email":jury_of_theme.president.user.get_email_field_name()},
+        }
+        return JsonResponse(response , safe=False, status = 200)
         
