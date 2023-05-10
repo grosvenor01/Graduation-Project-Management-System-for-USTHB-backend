@@ -5,6 +5,7 @@ class user_serializer(serializers.ModelSerializer):
         model =User
         fields="__all__"
 class pub_serializer(serializers.ModelSerializer):
+    user = user_serializer()
     class Meta:
         model=pub
         fields ="__all__"
