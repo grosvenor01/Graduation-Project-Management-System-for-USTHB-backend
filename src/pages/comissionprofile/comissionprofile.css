@@ -1,0 +1,35 @@
+
+.commision{
+    display: flex;
+    background-color:  #D3D3D3;
+    height: 100%;
+}
+
+.cbtn1{
+    width: 80px;
+    height: 30px;
+    background: #244D4D;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    color: #FFFFFF;
+}
+
+.cbtn2{
+    width:80px;
+    height: 30px;
+    background: #B90000;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    color: #FFFFFF;
+    margin-left: 20px;
+}

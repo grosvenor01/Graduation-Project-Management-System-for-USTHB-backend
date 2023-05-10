@@ -1,0 +1,142 @@
+
+.profprofile{
+    display: flex;
+    background-color:  #D3D3D3;
+   /* height: 830px;*/
+   height: 100%;
+}
+
+
+
+.pfecard{
+    width: 220px;
+    height: 400px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 15px;
+    margin-left: 18px;
+}
+
+.pfecard>h1{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    color: #000000;
+}
+
+.pfecard>h3{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 22px;
+    color: #000000;
+}
+
+.pfecard>h4{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    color: #6A6565;
+}
+
+.cmpts{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.cmpt{
+    width: 62px;
+    height: 20px;
+    border: 0.5px solid #707070;
+    border-radius: 5px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    color: #244D4D;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.pfecard>button, .profright>button, .addpfe>button{
+    width: 143px;
+    height: 26px;
+    background: #244D4D;
+    border-radius: 10px;
+    border: none;
+    margin-top: 15px;
+    margin-left: 40px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.pfecards{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.addpfe{
+    background-color:  #faf8f8;;
+    width: 400px;
+    height: 440px;
+    padding: 20px;
+    border-radius: 20px;
+    padding-left: 50px;
+}
+
+.addpfe>label{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 22px;
+    color: #244D4D;
+    margin-left: 20px;
+}
+
+.addpfe>label>input, .cmpss>input{
+    width: 300px;
+    height: 30px;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+    outline: none;
+    margin-left: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: transparent;
+}
+
+.addpfe>button{
+    margin-left: 100px;
+}
+
+.xmark{
+    margin-bottom: 10px;
+    margin-left: 370px;
+    cursor: pointer;
+}
+
+.popup{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+

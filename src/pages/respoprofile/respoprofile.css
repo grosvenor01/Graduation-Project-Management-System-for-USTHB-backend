@@ -1,0 +1,83 @@
+
+.respoprofile{
+    display: flex;
+    background-color: #D3D3D3;
+    height: 100%;
+}
+
+.respocard{
+    width: 210px;
+    height: 266px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding-left: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.respocard>h1{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    color: #000000;
+}
+
+.respocard>h2, .respocard>h4{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 22px;
+    color: #000000;
+}
+
+.respocard>h2>small{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #000000;
+}
+
+.respocard>h4>small{
+    color: #003687;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 22px;
+    text-decoration: underline;
+}
+
+.respocard>button{
+    width: 186px;
+    height: 34px;
+    background: #244D4D;
+    border-radius: 10px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    color: white;
+    border: none;
+}
+
+.repocards{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.resporight>h1{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 38px;
+    color: #000000;
+    margin-left: 20px;
+}
