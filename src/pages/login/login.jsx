@@ -27,13 +27,13 @@ function Login() {
         console.log(infos);
         const response = await fetch("http://localhost:8000/api/login/",{
             method: "POST",
+            credentials:'include',
             headers: {
                 'Content-Type' : 'application/json'
             },
             body: JSON.stringify(infos)
         })
         const result = await response.json();
-        console.log(result)
         history("/home")
     }
 

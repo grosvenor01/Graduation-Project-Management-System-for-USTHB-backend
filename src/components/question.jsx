@@ -12,6 +12,7 @@ import React from 'react';
 function Question() {
 
     const [comment, setComment] = useState("")
+    const [isLoading,setIsLoading]=useState(false)
     const [comments, setComments] = useState([])
     const onChangeHandler = (e) => {
         setComment(e.target.value)
@@ -22,12 +23,30 @@ function Question() {
 
     const [posts, setPosts] = useState([]);
     useEffect(() => {
-        fetch('http://localhost:8000/api/recommander/')
+        fetch('http://localhost:8000/api/recommander/', {
+            credentials: 'include'
+          })
             .then(response => response.json())
             .then(data => setPosts(data));
     }, []);
-
-    console.log(posts)
+    const onClickReturn = (postId, user) => {
+        setIsLoading(true);
+        const data = { postId, user };
+        fetch(`http://localhost:8000/api/postuler/${data.postId}`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        })
+          .then(response => response.json())
+          .then(data => {
+            setIsLoading(false);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            setIsLoading(false);
+          });
+      };
     return (
         <div>
             {posts.map((post, index) => (
@@ -42,7 +61,7 @@ function Question() {
                         </div>
                         )}
                         <div className="points">
-                            <FontAwesomeIcon icon={faEllipsisVertical} className='pointsicon' />
+                            <button className='pointsicon' onClick={()=>onClickReturn(post.id,post.user.id)} disabled={isLoading}>Postuler</button>
                         </div>
                     </div>
                     {posts.length > 0 && (
